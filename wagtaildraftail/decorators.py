@@ -25,21 +25,25 @@ def HR(props):
 
 class Link:
     def render(self, props):
-        data = props.get('data', {})
-
-        if 'id' in data:
+        link_type = props.get('linkType', '')
+        title = None
+        if link_type == 'page':
             try:
-                page = Page.objects.get(id=data['id'])
+                page_id = props.get('id')
+                page = Page.objects.get(id=page_id)
                 href = page.url
+                title = page.title
             except Page.DoesNotExist:
-                href = data.get('url', MISSING_RESOURCE_URL)
+                href = props.get('url', MISSING_RESOURCE_URL)
         else:
-            href = data.get('url', MISSING_RESOURCE_URL)
+            href = props.get('url', MISSING_RESOURCE_URL)
 
-        return DOM.create_element('a', {
-            'href': href,
-            'title': data.get('title'),
-        }, props['children'])
+        anchor_properties = {
+            'href': href
+        }
+        if title is not None:
+            anchor_properties['title'] = title
+        return DOM.create_element('a', anchor_properties, props['children'])
 
 
 class Model:
