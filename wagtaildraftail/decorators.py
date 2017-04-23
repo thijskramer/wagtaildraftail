@@ -26,13 +26,13 @@ def HR(props):
 class Link:
     def render(self, props):
         link_type = props.get('linkType', '')
-        title = None
+        title = props.get('title')
+
         if link_type == 'page':
             try:
                 page_id = props.get('id')
                 page = Page.objects.get(id=page_id)
                 href = page.url
-                title = page.title
             except Page.DoesNotExist:
                 href = props.get('url', MISSING_RESOURCE_URL)
         else:
@@ -41,8 +41,10 @@ class Link:
         anchor_properties = {
             'href': href
         }
+
         if title is not None:
             anchor_properties['title'] = title
+
         return DOM.create_element('a', anchor_properties, props['children'])
 
 
