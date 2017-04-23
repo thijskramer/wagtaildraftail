@@ -44,13 +44,13 @@ class TestLink(unittest.TestCase):
         self.page = page
 
     def test_internal_link(self):
-        """Test if the page URL and title are set."""
+        """Test if the page URL is set."""
         input_props = {
             'linkType': 'page',
             'id': self.page.pk
         }
         output = DOM.render(DOM.create_element(Link, input_props))
-        self.assertEqual(output, '<a href="{0}" title="{1}"></a>'.format(self.page.url, self.page.title))
+        self.assertEqual(output, '<a href="{0}"></a>'.format(self.page.url))
 
     def test_internal_link_href_fallback(self):
         """Test if the fallback href is used when the page does not exist."""
@@ -70,6 +70,16 @@ class TestLink(unittest.TestCase):
         output = DOM.render(DOM.create_element(Link, input_props))
         self.assertEqual(output, '<a href="http://test.test"></a>')
 
+    def test_with_title(self):
+        """Test if title attribute is set."""
+        input_props = {
+            'linkType': 'external',
+            'url': 'http://test.test',
+            'title': 'Test title'
+        }
+        output = DOM.render(DOM.create_element(Link, input_props))
+        self.assertEqual(output, '<a href="http://test.test" title="Test title"></a>')
+
     def test_with_children(self):
         """Test if child content is rendered."""
         input_props = {
@@ -77,4 +87,4 @@ class TestLink(unittest.TestCase):
             'id': self.page.pk,
         }
         output = DOM.render(DOM.create_element(Link, input_props, 'anchor content'))
-        self.assertEqual(output, '<a href="{0}" title="{1}">anchor content</a>'.format(self.page.url, self.page.title))
+        self.assertEqual(output, '<a href="{0}">anchor content</a>'.format(self.page.url))
