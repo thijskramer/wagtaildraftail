@@ -4,8 +4,9 @@ import unittest
 
 from draftjs_exporter.constants import BLOCK_TYPES
 from draftjs_exporter.dom import DOM
-from home.models import HomePage
 from wagtail.wagtailcore.models import Page, Site
+
+from home.models import HomePage
 from wagtaildraftail.decorators import BR, HR, MISSING_RESOURCE_URL, Icon, Link
 
 
